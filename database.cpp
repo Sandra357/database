@@ -16,8 +16,17 @@ void Database::Add(Date date, string event) {
     }
 }
 
-int Database::RemoveIf() {
+int Database::RemoveIf(UnaryPredicate p) {
+    int deleted_data_num = 0;
+    for (auto i : database) {
+        auto new_end = remove_if(i.first.begin(), i.first.end(), p(i.first, j));
+        if (new_end != i.first.end()) {
+            deleted_data_num++;
+            i.first.end() - new_end;
+        }
+    }
 
+    return deleted_data_num;
 }
 
 ostream& Database::Print(ostream& os) {
