@@ -20,3 +20,4 @@ public:
 Date ParseDate(istream& is);
 
 ostream& operator<<(ostream& os, const Date& date);
+bool operator==(const Date& date1, const Date& date2);

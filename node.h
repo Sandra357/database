@@ -20,19 +20,19 @@ enum class LogicalOperation {
 
 class Node {
 public:
-	virtual bool Evaluate(Date& d, string& e) const = 0;
+	virtual bool Evaluate(Date d, string e) const = 0;
 };
 
 class EmptyNode : public Node {
 public:
-	virtual bool Evaluate(Date& d, string& e) const;
+	virtual bool Evaluate(Date d, string e) const;
 };
 
 
 class DateComparisonNode : public Node {
 public:
-	DateComparisonNode(Comparison& c, Date& d);
-	virtual bool Evaluate(Date& d, string& e) const;
+	DateComparisonNode(Comparison c, Date d);
+	virtual bool Evaluate(Date d, string e) const;
 
 private:
 	Comparison cmp;
@@ -41,8 +41,8 @@ private:
 
 class EventComparisonNode : public Node {
 public:
-	EventComparisonNode(Comparison& c, string& e);
-	virtual bool Evaluate(Date& d, string& e) const;
+	EventComparisonNode(Comparison c, string e);
+	virtual bool Evaluate(Date d, string e) const;
 
 private:
 	Comparison cmp;
@@ -55,7 +55,7 @@ public:
 	LogicalOperationNode(LogicalOperation l_op,
 						 shared_ptr<Node> l_node,
 						 shared_ptr<Node> r_node);
-	virtual bool Evaluate(Date& d, string& e) const;
+	virtual bool Evaluate(Date d, string e) const;
 
 private:
 	LogicalOperation logical_op;
