@@ -7,13 +7,37 @@ bool EmptyNode::Evaluate(Date d, string e) const {
 DateComparisonNode::DateComparisonNode(Comparison c, Date d) : cmp(c), date(d) {};
 
 bool DateComparisonNode::Evaluate(Date d, string e) const {
-	return d == date;
+	if (cmp == Comparison::Less) {
+		return d < date;
+	} else if (cmp == Comparison::LessOrEqual) {
+		return d <= date;
+	} else if (cmp == Comparison::Greater) {
+		return d > date;
+	} else if (cmp == Comparison::GreaterOrEqual) {
+		return d >= date;
+	} else if (cmp == Comparison::Equal) {
+		return date == d;
+	} else {
+		return date != d;
+	}
 }
 
 EventComparisonNode::EventComparisonNode(Comparison c, string e) : cmp(c), event(e) {};
 
 bool EventComparisonNode::Evaluate(Date d, string e) const {
-	return e == event;
+	if (cmp == Comparison::Less) {
+		return e < event;
+	} else if (cmp == Comparison::LessOrEqual) {
+		return e <= event;
+	} else if (cmp == Comparison::Greater) {
+		return e > event;
+	} else if (cmp == Comparison::GreaterOrEqual) {
+		return e >= event;
+	} else if (cmp == Comparison::Equal) {
+		return event == e;
+	} else {
+		return event != e;
+	}
 }
 
 LogicalOperationNode::LogicalOperationNode(LogicalOperation l_op,

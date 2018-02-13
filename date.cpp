@@ -56,6 +56,31 @@ ostream& operator<<(ostream& os, const Date& date) {
     return os;
 }
 
+bool operator==(const Date&a, const Date& b) {
+    return tie(a.year, a.month, a.day) == tie(b.year, b.month, b.day);
+}
+
+bool operator!=(const Date&a, const Date& b) {
+    return tie(a.year, a.month, a.day) != tie(b.year, b.month, b.day);
+}
+
+bool operator<(const Date&a, const Date& b) {
+    return tie(a.year, a.month, a.day) < tie(b.year, b.month, b.day);
+}
+
+bool operator<=(const Date&a, const Date& b) {
+    return tie(a.year, a.month, a.day) <= tie(b.year, b.month, b.day);
+}
+
+bool operator>(const Date&a, const Date& b) {
+    return tie(a.year, a.month, a.day) > tie(b.year, b.month, b.day);
+}
+
+bool operator>=(const Date&a, const Date& b) {
+    return tie(a.year, a.month, a.day) >=tie(b.year, b.month, b.day);
+}
+
+/*
 bool operator==(const Date& date1, const Date& date2) {
     if ((date1.GetYear() == date2.GetYear()) &&
         (date1.GetMonth() == date2.GetMonth()) &&
@@ -64,3 +89,64 @@ bool operator==(const Date& date1, const Date& date2) {
     }
     return false;
 }
+
+bool operator<(const Date& date1, const Date& date2) {
+    if (date1.GetYear() >= date2.GetYear()) {
+        return false;
+    } else if (date1.GetMonth() >= date2.GetMonth()) {
+        return false;
+    } else if (date1.GetDay() >= date2.GetDay()) {
+        return false;
+    }
+
+    return true;
+}
+
+bool operator<=(const Date& date1, const Date& date2) {
+    if (date1.GetYear() > date2.GetYear()) {
+        return false;
+    } else if (date1.GetMonth() > date2.GetMonth()) {
+        return false;
+    } else if (date1.GetDay() > date2.GetDay()) {
+        return false;
+    }
+
+    return true;
+}
+
+bool operator>(const Date& date1, const Date& date2) {
+    if (date1.GetYear() <= date2.GetYear()) {
+        return false;
+    } else if (date1.GetMonth() <= date2.GetMonth()) {
+        return false;
+    } else if (date1.GetDay() <= date2.GetDay()) {
+        return false;
+    }
+
+    return true;
+}
+
+bool operator>=(const Date& date1, const Date& date2) {
+    if (date1.GetYear() < date2.GetYear()) {
+        return false;
+    } else if (date1.GetMonth() < date2.GetMonth()) {
+        return false;
+    } else if (date1.GetDay() < date2.GetDay()) {
+        return false;
+    }
+
+    return true;
+}
+
+bool operator!=(const Date& date1, const Date& date2) {
+    if (date1.GetYear() == date2.GetYear()) {
+        return false;
+    } else if (date1.GetMonth() == date2.GetMonth()) {
+        return false;
+    } else if (date1.GetDay() == date2.GetDay()) {
+        return false;
+    }
+
+    return true;
+}
+*/

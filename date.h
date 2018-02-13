@@ -1,5 +1,6 @@
 #pragma once
 
+#include <tuple>
 #include <iostream>
 
 using namespace std;
@@ -21,3 +22,8 @@ Date ParseDate(istream& is);
 
 ostream& operator<<(ostream& os, const Date& date);
 bool operator==(const Date& date1, const Date& date2);
+bool operator<(const Date& date1, const Date& date2);
+bool operator<=(const Date& date1, const Date& date2);
+bool operator>(const Date& date1, const Date& date2);
+bool operator>=(const Date& date1, const Date& date2);
+bool operator!=(const Date& date1, const Date& date2);
