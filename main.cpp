@@ -15,17 +15,19 @@ using namespace std;
 
 string ParseEvent(istream& is) {
     string event;
-    is >> event;
+    getline(is, event);
+    const char* t = " \t\n\r\f\v";
+    event.erase(0, event.find_first_not_of(t));
 
     return event;
 }
 
 
-//void TestAll();
+void TestAll();
 
 int main() {
-    //TestAll();
-    //check
+    TestAll();
+
     Database db;
 
     for (string line; getline(cin, line); ) {
@@ -73,7 +75,7 @@ int main() {
     return 0;
 }
 
-/*void TestParseEvent() {
+void TestParseEvent() {
     {
         istringstream is("event");
         AssertEqual(ParseEvent(is), "event", "Parse event without leading spaces");
@@ -95,4 +97,4 @@ void TestAll() {
     TestRunner tr;
     tr.RunTest(TestParseEvent, "TestParseEvent");
     tr.RunTest(TestParseCondition, "TestParseCondition");
-}*/
+}

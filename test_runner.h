@@ -9,6 +9,13 @@
 
 using namespace std;
 
+ostream& operator<<(ostream& os, const vector<string> v) {
+  for (auto i : v) {
+    os << i << " ";
+  }
+  return os;
+}
+
 template <class T>
 ostream& operator << (ostream& os, const set<T>& s) {
   os << "{";
