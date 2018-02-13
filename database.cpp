@@ -48,6 +48,22 @@ VectorFindDatabse Database::FindIf(function<bool(const Date&, const string&)>p) 
     return find_database;
 }
 
+pair<Date, string> Database::Last(Date d) {
+    auto last = upper_bound(database.begin(), database.end(), d,
+                            [](Date dd, pair<Date, vector<string>> p) {
+                                return p.first > dd;
+                            });
+
+    if (last == database.begin()) {
+        throw invalid_argument("No entries");
+    }
+
+    last--;
+    pair<Date, string> last_pair = {last->first, last->second.back()};
+
+    return last_pair;
+}
+
 ostream& Database::Print(ostream& os) {
     for (auto i : database) {
         for (auto j : i.second) {
