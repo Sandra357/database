@@ -2,6 +2,11 @@
 
 #include <algorithm>
 
+ostream& operator<<(ostream& os, const pair<Date, string> p){
+    os << p.first << " " << p.second;
+    return os;
+}
+
 void Database::Add(Date date, string event) {
     if(database[date].empty()) {
         database[date].push_back(event);
@@ -27,6 +32,20 @@ int Database::RemoveIf(function<bool(const Date&, const string&)>p) {
     }
 
     return deleted_data_num;
+}
+
+VectorFindDatabse Database::FindIf(function<bool(const Date&, const string&)>p) {
+    VectorFindDatabse find_database;
+
+    for (auto i = database.begin(); i != database.end(); i++) {
+        for (auto j = i->second.begin(); j != i->second.end(); j++) {
+            if (p(i->first, *j)) {
+                find_database.push_back({i->first, *j});
+            }
+        }
+    }
+
+    return find_database;
 }
 
 ostream& Database::Print(ostream& os) {

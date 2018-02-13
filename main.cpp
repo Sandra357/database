@@ -46,7 +46,7 @@ int main() {
             };
             auto count = db.RemoveIf(predicate);
             cout << "Removed " << count << " entries" << endl;
-        /*} else if (command == "Find") {
+        } else if (command == "Find") {
             auto condition = ParseCondition(is);
             auto predicate = [condition](const Date& date, const string& event) {
                 return condition->Evaluate(date, event);
@@ -57,7 +57,7 @@ int main() {
                 cout << entry << endl;
             }
             cout << "Found " << entries.size() << " entries" << endl;
-        } else if (command == "Last") {
+        /*} else if (command == "Last") {
             try {
                 cout << db.Last(ParseDate(is)) << endl;
             } catch (invalid_argument&) {

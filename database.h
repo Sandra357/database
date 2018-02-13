@@ -10,13 +10,15 @@
 using namespace std;
 
 typedef map<Date, vector<string>> MapDatabase;
+typedef vector<pair<Date, string>> VectorFindDatabse;
 
-bool operator<(const Date&a, const Date& b);
+ostream& operator<<(ostream& os, const pair<Date, string> p);
 
 class Database {
 public:
     void Add(Date date, string event);
     int RemoveIf(function<bool(const Date&, const string&)>p);
+    VectorFindDatabse FindIf(function<bool(const Date&, const string&)>p);
 
     ostream& Print(ostream& os);
 
