@@ -20,7 +20,7 @@ void Database::Add(Date date, string event) {
 int Database::RemoveIf(function<bool(const Date&, const string&)>p) {
     int deleted_data_num = 0;
 
-    for (auto i = database.begin(); i != database.end(); i++) {
+    for (auto i = database.begin(); i != database.end();) {
         auto it = remove_if(i->second.begin(), i->second.end(),
                             [&](string s) {
                                 return p(i->first, s);
@@ -29,9 +29,13 @@ int Database::RemoveIf(function<bool(const Date&, const string&)>p) {
             int remove_num = i->second.end() - it;
             i->second.erase(it, i->second.end());
             if (i->second.size() == 0) {
-                database.erase(i);
+                i = database.erase(i);
+            } else {
+                i++;
             }
             deleted_data_num += remove_num;
+        } else {
+            i++;
         }
     }
 
@@ -56,7 +60,7 @@ VectorFindDatabse Database::FindIf(function<bool(const Date&, const string&)>p) 
 
 pair<Date, string> Database::Last(Date d) {
     auto last = upper_bound(database.begin(), database.end(), d,
-                            [](Date dd, pair<Date, vector<string>> p) {
+                            [](Date dd, pair<Date, deque<string>> p) {
                                 return p.first > dd;
                             });
 
