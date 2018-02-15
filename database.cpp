@@ -21,16 +21,17 @@ int Database::RemoveIf(function<bool(const Date&, const string&)>p) {
     int deleted_data_num = 0;
 
     for (auto i = database.begin(); i != database.end(); i++) {
-        for (auto j = i->second.begin(); j != i->second.end();) {
-            if (p(i->first, *j)) {
-                i->second.erase(j);
-                deleted_data_num++;
-                if (i->second.size() == 0) {
-                    database.erase(i);
-                }
-            } else {
-                ++j;
+        auto it = remove_if(i->second.begin(), i->second.end(),
+                            [&](string s) {
+                                return p(i->first, s);
+                            });
+        if (it != i->second.end()) {
+            int remove_num = i->second.end() - it;
+            i->second.erase(it, i->second.end());
+            if (i->second.size() == 0) {
+                database.erase(i);
             }
+            deleted_data_num += remove_num;
         }
     }
 
@@ -41,10 +42,12 @@ VectorFindDatabse Database::FindIf(function<bool(const Date&, const string&)>p) 
     VectorFindDatabse find_database;
 
     for (auto i = database.begin(); i != database.end(); i++) {
-        for (auto j = i->second.begin(); j != i->second.end(); j++) {
-            if (p(i->first, *j)) {
-                find_database.push_back({i->first, *j});
-            }
+        auto it = partition(i->second.begin(), i->second.end(),
+                            [&](string s) {
+                                return p(i->first, s);
+                            });
+        for (auto j = i->second.begin(); j != it; j++) {
+            find_database.push_back({i->first, *j});
         }
     }
 
