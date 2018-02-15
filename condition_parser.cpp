@@ -117,7 +117,3 @@ shared_ptr<Node> ParseCondition(istream& is) {
 
     return top_node;
 }
-
-void TestParseCondition() {
-    cout << "OK";
-}

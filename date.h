@@ -7,15 +7,16 @@ using namespace std;
 
 class Date {
 public:
-    Date(const string& y, const string& m, const string& d);
+    Date(const int& y, const int& m, const int& d);
+    Date(initializer_list<int> l);
 
-    string GetYear() const;
-    string GetMonth() const;
-    string GetDay() const;
+    int GetYear() const;
+    int GetMonth() const;
+    int GetDay() const;
 
-    const string year;
-    const string month;
-    const string day;
+    int year;
+    int month;
+    int day;
 };
 
 Date ParseDate(istream& is);
@@ -27,3 +28,4 @@ bool operator<=(const Date& date1, const Date& date2);
 bool operator>(const Date& date1, const Date& date2);
 bool operator>=(const Date& date1, const Date& date2);
 bool operator!=(const Date& date1, const Date& date2);
+

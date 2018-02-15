@@ -25,6 +25,9 @@ int Database::RemoveIf(function<bool(const Date&, const string&)>p) {
             if (p(i->first, *j)) {
                 i->second.erase(j);
                 deleted_data_num++;
+                if (i->second.size() == 0) {
+                    database.erase(i);
+                }
             } else {
                 ++j;
             }

@@ -1,10 +1,10 @@
 #include "condition_parser.h"
-//#include "test_runner.h"
+#include "test_runner.h"
 
 #include <sstream>
 
 using namespace std;
-/*
+
 void TestParseCondition() {
   {
     istringstream is("date != 2017-11-18");
@@ -77,4 +77,3 @@ void TestParseCondition() {
     Assert(root->Evaluate({2016, 1, 2}, "event"), "Parse condition 30");
   }
 }
-*/
