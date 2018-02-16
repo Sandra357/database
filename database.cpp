@@ -14,7 +14,10 @@ void Database::Add(Date date, string event) {
         database_set.insert({date, tmp});
         database[date].push_back(event);
     } else {
-        if (find(database_set[date].begin(), database_set[date].end(), event) == database_set[date].end()) {
+        auto search = database_set[date].find(event);
+        if (search == database_set[date].end()) {
+        //if (find(database_set[date].begin(), database_set[date].end(), event) ==
+        //                                                        database_set[date].end()) {
             database[date].push_back(event);
             database_set[date].insert(event);
         }
