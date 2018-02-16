@@ -2,16 +2,17 @@
 
 #include "date.h"
 
-#include <deque>
 #include <functional>
 #include <iostream>
 #include <map>
 #include <vector>
+#include <set>
 
 using namespace std;
 
-typedef map<Date, deque<string>> MapDatabase;
-typedef deque<pair<Date, string>> VectorFindDatabse;
+typedef map<Date, vector<string>> MapDatabase;
+typedef map<Date, set<string>> MapDatabaseSet;
+typedef vector<pair<Date, string>> VectorFindDatabse;
 
 ostream& operator<<(ostream& os, const pair<Date, string> p);
 
@@ -24,4 +25,5 @@ public:
     ostream& Print(ostream& os);
 
     MapDatabase database;
+    MapDatabaseSet database_set;
 };
