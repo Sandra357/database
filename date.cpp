@@ -32,6 +32,10 @@ Date ParseDate(istream& is) {
     string date;
     is >> date;
 
+    if (date == "") {
+        throw invalid_argument("No entries");
+    }
+
     istringstream iss(date);
     vector<string> date_parts;
     string tmp;
