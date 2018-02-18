@@ -9,25 +9,28 @@ ostream& operator<<(ostream& os, const pair<Date, string> p){
 
 void Database::Add(Date date, string event) {
     if (database[date].empty()) {
+        //cout << "empty" << endl;
         set<string> tmp;
         auto it = tmp.insert(event);
         database_set.insert({date, tmp});
         database[date].push_back(event);
     } else {
+        //cout << "try search" << endl;
         auto search = database_set[date].find(event);
         if (search == database_set[date].end()) {
-        //if (find(database_set[date].begin(), database_set[date].end(), event) ==
-        //                                                        database_set[date].end()) {
+            //cout << "add" << endl;
             database[date].push_back(event);
             database_set[date].insert(event);
-        }
+        } //else {
+            //cout << "find" << endl;
+        //}
     }
 }
 
 int Database::RemoveIf(function<bool(const Date&, const string&)>p) {
     int deleted_data_num = 0;
 
-    for (auto i = database.begin(); i != database.end();) {
+    /*for (auto i = database.begin(); i != database.end();) {
         auto it = remove_if(i->second.begin(), i->second.end(),
                             [&](string s) {
                                 return p(i->first, s);
@@ -44,15 +47,33 @@ int Database::RemoveIf(function<bool(const Date&, const string&)>p) {
         } else {
             i++;
         }
-    }
+    }*/
 
-    for (auto i2 = database_set.begin(); i2 != database_set.end(); i2++) {
+    bool erased = false;
+
+    for (auto i2 = database_set.begin(); i2 != database_set.end();) {
         for (auto j2 = i2->second.begin(); j2 != i2->second.end();) {
             if (p(i2->first, *j2)) {
+                //j2 = i2->second.erase(j2);
+                auto it = find(database[i2->first].begin(), database[i2->first].end(), *j2);
+                database[i2->first].erase(it);
                 j2 = i2->second.erase(j2);
+                deleted_data_num++;
+                if (i2->second.empty()) {
+                    database.erase(i2->first);
+                    i2 = database_set.erase(i2);
+                    erased = true;
+                    break;
+                } else {
+                    erased = false;
+                }
             } else {
                 ++j2;
+                erased = false;
             }
+        }
+        if (!erased) {
+            i2++;
         }
     }
 
