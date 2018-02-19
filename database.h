@@ -10,8 +10,14 @@
 
 using namespace std;
 
-typedef map<Date, vector<string>> MapDatabase;
-typedef map<Date, set<string>> MapDatabaseSet;
+struct Containers {
+	vector<string> vector_data;
+	set<string> set_data;
+};
+
+//typedef map<Date, vector<string>> MapDatabase;
+//typedef map<Date, set<string>> MapDatabaseSet;
+typedef map<Date, Containers> MapDatabase;
 typedef vector<pair<Date, string>> VectorFindDatabse;
 
 ostream& operator<<(ostream& os, const pair<Date, string> p);
@@ -24,6 +30,7 @@ public:
     pair<Date, string> Last(Date d);
     ostream& Print(ostream& os);
 
+    //MapDatabase database;
+    //MapDatabaseSet database_set;
     MapDatabase database;
-    MapDatabaseSet database_set;
 };

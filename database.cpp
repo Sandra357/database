@@ -8,61 +8,62 @@ ostream& operator<<(ostream& os, const pair<Date, string> p){
 }
 
 void Database::Add(Date date, string event) {
-    if (database[date].empty()) {
-        //cout << "empty" << endl;
-        set<string> tmp;
-        auto it = tmp.insert(event);
-        database_set.insert({date, tmp});
-        database[date].push_back(event);
+    if (database.empty()) {
+        set<string> tmp_set;
+        vector<string> tmp_vector;
+        auto it_set = tmp_set.insert(event);
+        tmp_vector.push_back(event);
+        database[date].vector_data = tmp_vector;
+        database[date].set_data = tmp_set;
     } else {
-        //cout << "try search" << endl;
+        auto it = database.find(date);
+        if (it != database.end()) {
+            auto search = database[date].set_data.find(event);
+            if (search == database[date].set_data.end()) {
+                it->second.vector_data.push_back(event);
+                it->second.set_data.insert(event);
+            }
+        } else {
+            set<string> tmp_set;
+            vector<string> tmp_vector;
+            auto it_set = tmp_set.insert(event);
+            tmp_vector.push_back(event);
+            database[date].vector_data = tmp_vector;
+            database[date].set_data = tmp_set;
+        }
+    }
+    //if (database[date].empty()) {
+        //set<string> tmp;
+        //auto it = tmp.insert(event);
+        //database[date].base_set.insert(event);
+        //database[date].base_vector.push_back(event);
+        //database_set.insert({date, tmp});
+        //database[date].push_back(event);
+    /*} else {
         auto search = database_set[date].find(event);
         if (search == database_set[date].end()) {
-            //cout << "add" << endl;
             database[date].push_back(event);
             database_set[date].insert(event);
-        } //else {
-            //cout << "find" << endl;
-        //}
-    }
+        }
+    }*/
 }
 
 int Database::RemoveIf(function<bool(const Date&, const string&)>p) {
     int deleted_data_num = 0;
-
-    /*for (auto i = database.begin(); i != database.end();) {
-        auto it = remove_if(i->second.begin(), i->second.end(),
-                            [&](string s) {
-                                return p(i->first, s);
-                            });
-        if (it != i->second.end()) {
-            int remove_num = i->second.end() - it;
-            i->second.erase(it, i->second.end());
-            if (i->second.size() == 0) {
-                i = database.erase(i);
-            } else {
-                i++;
-            }
-            deleted_data_num += remove_num;
-        } else {
-            i++;
-        }
-    }*/
-
     bool erased = false;
 
-    for (auto i2 = database_set.begin(); i2 != database_set.end();) {
-        for (auto j2 = i2->second.begin(); j2 != i2->second.end();) {
+    for (auto i2 = database.begin(); i2 != database.end();) {
+        for (auto j2 = i2->second.set_data.begin(); j2 != i2->second.set_data.end();) {
             if (p(i2->first, *j2)) {
-                //j2 = i2->second.erase(j2);
-                auto it = find(database[i2->first].begin(), database[i2->first].end(), *j2);
-                database[i2->first].erase(it);
-                j2 = i2->second.erase(j2);
+                auto it = find(database[i2->first].vector_data.begin(), database[i2->first].vector_data.end(), *j2);
+                database[i2->first].vector_data.erase(it);
+                j2 = i2->second.set_data.erase(j2);
                 deleted_data_num++;
-                if (i2->second.empty()) {
-                    database.erase(i2->first);
-                    i2 = database_set.erase(i2);
+                if (i2->second.vector_data.empty()) {
+                    //database.erase(i2->first);
+                    i2 = database.erase(i2);
                     erased = true;
+                    //cout << "erased" << endl;
                     break;
                 } else {
                     erased = false;
@@ -72,10 +73,12 @@ int Database::RemoveIf(function<bool(const Date&, const string&)>p) {
                 erased = false;
             }
         }
+        //cout << "for 1" << endl;
         if (!erased) {
             i2++;
         }
     }
+    //cout << "after for" << endl;
 
     return deleted_data_num;
 }
@@ -84,12 +87,10 @@ VectorFindDatabse Database::FindIf(function<bool(const Date&, const string&)>p) 
     VectorFindDatabse find_database;
 
     for (auto i = database.begin(); i != database.end(); i++) {
-        auto it = partition(i->second.begin(), i->second.end(),
-                            [&](string s) {
-                                return p(i->first, s);
-                            });
-        for (auto j = i->second.begin(); j != it; j++) {
-            find_database.push_back({i->first, *j});
+        for (auto j = i->second.vector_data.begin(); j != i->second.vector_data.end(); j++) {
+            if (p(i->first, *j)) {
+                find_database.push_back({i->first, *j});
+            }
         }
     }
 
@@ -98,7 +99,7 @@ VectorFindDatabse Database::FindIf(function<bool(const Date&, const string&)>p) 
 
 pair<Date, string> Database::Last(Date d) {
     auto last = upper_bound(database.begin(), database.end(), d,
-                            [](Date dd, pair<Date, vector<string>> p) {
+                            [](Date dd, pair<Date, Containers> p) {
                                 return p.first > dd;
                             });
 
@@ -107,14 +108,14 @@ pair<Date, string> Database::Last(Date d) {
     }
 
     last--;
-    pair<Date, string> last_pair = {last->first, last->second.back()};
+    pair<Date, string> last_pair = {last->first, last->second.vector_data.back()};
 
     return last_pair;
 }
 
 ostream& Database::Print(ostream& os) {
     for (auto i : database) {
-        for (auto j : i.second) {
+        for (auto j : i.second.vector_data) {
             os << i.first << " " << j << endl;
         }
     }

@@ -26,7 +26,7 @@ string ParseEvent(istream& is) {
 void TestAll();
 
 int main() {
-    //TestAll();
+    TestAll();
 
     Database db;
 
@@ -222,7 +222,7 @@ void TestDbSimple(){
 
 
 void TestDbMedium(){
-  Database db; 
+  Database db;
   /*
     добавляем 2000-1-1 ev1, 2000-2-1 ev2 ev3, 2000-3-1 ev1 ev4 ev5
   */
@@ -233,7 +233,7 @@ void TestDbMedium(){
   const auto event = ParseEvent(is);
   db.Add(date, event);
   }
-  
+
   //*******************************************
   {
     istringstream is("2000-2-1 ev3");
@@ -249,7 +249,7 @@ void TestDbMedium(){
     const auto event = ParseEvent(is);
     db.Add(date, event);
   }
-  
+
   //*******************************************
   {
     istringstream is("2000-3-1 ev1");
