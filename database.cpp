@@ -18,12 +18,12 @@ void Database::Add(Date date, string event) {
         c.set_data = tmp_set;
         database.insert({date, c});
     } else {
-        auto it = database.upper_bound(date);
-        if (prev(it)->first == date) {
+        auto it = database.find(date);
+        if (it != database.end()) {
             auto search = it->second.set_data.find(event);
             if (search == it->second.set_data.end()) {
-                prev(it)->second.vector_data.push_back(event);
-                prev(it)->second.set_data.insert(event);
+                it->second.vector_data.push_back(event);
+                it->second.set_data.insert(event);
             }
         } else {
             set<string> tmp_set;
@@ -33,7 +33,7 @@ void Database::Add(Date date, string event) {
             Containers c;
             c.vector_data = tmp_vector;
             c.set_data = tmp_set;
-            database.insert(prev(it), {date, c});
+            database.insert({date, c});
         }
         /*if (it != database.end()) {
             auto search = it->second.set_data.find(event);
