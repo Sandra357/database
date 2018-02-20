@@ -8,7 +8,12 @@ ostream& operator<<(ostream& os, const pair<Date, string> p){
 }
 
 void Database::Add(Date date, string event) {
-    if (database.empty()) {
+    auto it = database[date].set_data.find(event);
+    if (it == database[date].set_data.end()) {
+        database[date].vector_data.push_back(event);
+        database[date].set_data.insert(event);
+    }
+    /*if (database.empty()) {
         set<string> tmp_set;
         vector<string> tmp_vector;
         auto it_set = tmp_set.insert(event);
@@ -34,7 +39,7 @@ void Database::Add(Date date, string event) {
             c.vector_data = tmp_vector;
             c.set_data = tmp_set;
             database.insert({date, c});
-        }
+        }*/
         /*if (it != database.end()) {
             auto search = it->second.set_data.find(event);
             if (search == it->second.set_data.end()) {
@@ -57,7 +62,7 @@ void Database::Add(Date date, string event) {
             //it->second.set_data.insert(event);
             //database[date].set_data = tmp_set;
         //}
-    }
+    //}
     //if (database[date].empty()) {
         //set<string> tmp;
         //auto it = tmp.insert(event);
