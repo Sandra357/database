@@ -216,11 +216,6 @@ void TestDbSimple(){
   }
 }
 
-
-
-
-
-
 void TestDbMedium(){
   Database db;
   /*
@@ -499,10 +494,72 @@ void TestDbMedium(){
   }
 }
 
+void TestDbRemove(){
+  Database db;
+  /*
+    добавляем 1-1-1 b, 1-1-1 c, 1-1-1 d, 1-1-1 a, 1-1-1 f, 1-1-1 e
+  */
+  {
+    istringstream is("1-1-1 b");
+    stringstream temp;
+    const auto date = ParseDate(is);
+    const auto event = ParseEvent(is);
+    db.Add(date, event);
+  }
+  {
+    istringstream is("1-1-1 c");
+    stringstream temp;
+    const auto date = ParseDate(is);
+    const auto event = ParseEvent(is);
+    db.Add(date, event);
+  }
+  {
+    istringstream is("1-1-1 d");
+    stringstream temp;
+    const auto date = ParseDate(is);
+    const auto event = ParseEvent(is);
+    db.Add(date, event);
+  }
+  {
+    istringstream is("1-1-1 a");
+    stringstream temp;
+    const auto date = ParseDate(is);
+    const auto event = ParseEvent(is);
+    db.Add(date, event);
+  }
+  {
+    istringstream is("1-1-1 f");
+    stringstream temp;
+    const auto date = ParseDate(is);
+    const auto event = ParseEvent(is);
+    db.Add(date, event);
+  }
+  {
+    istringstream is("1-1-1 e");
+    stringstream temp;
+    const auto date = ParseDate(is);
+    const auto event = ParseEvent(is);
+    db.Add(date, event);
+  }
+  {
+    istringstream is("event > \"d\"");
+    auto condition = ParseCondition(is);
+    auto predicate = [condition](const Date& date, const string& event) {
+      return condition->Evaluate(date, event);
+    };
+    auto count = db.RemoveIf(predicate);
+    AssertEqual(count, 2, "del 2");
+    stringstream ss;
+    db.Print(ss);
+    AssertEqual(ss.str(), "0001-01-01 b\n0001-01-01 c\n0001-01-01 d\n0001-01-01 a\n", "del bigger than d test");
+  }
+}
+
 void TestAll() {
   TestRunner tr;
   tr.RunTest(TestParseEvent, "TestParseEvent");
   tr.RunTest(TestParseCondition, "TestParseCondition");
-  tr.RunTest(TestDbSimple, "TestDbSimple");
-  tr.RunTest(TestDbMedium, "TestDbMedium");
+  //tr.RunTest(TestDbSimple, "TestDbSimple");
+  //tr.RunTest(TestDbMedium, "TestDbMedium");
+  //tr.RunTest(TestDbRemove, "TestDbRemove");
 }

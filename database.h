@@ -15,8 +15,6 @@ struct Containers {
 	set<string> set_data;
 };
 
-//typedef map<Date, vector<string>> MapDatabase;
-//typedef map<Date, set<string>> MapDatabaseSet;
 typedef map<Date, Containers> MapDatabase;
 typedef vector<pair<Date, string>> VectorFindDatabse;
 
@@ -24,13 +22,11 @@ ostream& operator<<(ostream& os, const pair<Date, string> p);
 
 class Database {
 public:
-    void Add(Date date, string event);
+    void Add(Date& date, string& event);
     int RemoveIf(function<bool(const Date&, const string&)>p);
     VectorFindDatabse FindIf(function<bool(const Date&, const string&)>p);
     pair<Date, string> Last(Date d);
     ostream& Print(ostream& os);
 
-    //MapDatabase database;
-    //MapDatabaseSet database_set;
     MapDatabase database;
 };
