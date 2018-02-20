@@ -22,7 +22,7 @@ ostream& operator<<(ostream& os, const pair<Date, string> p);
 
 class Database {
 public:
-    void Add(Date& date, string& event);
+    void Add(const Date& date, const string& event);
     int RemoveIf(function<bool(const Date&, const string&)>p);
     VectorFindDatabse FindIf(function<bool(const Date&, const string&)>p);
     pair<Date, string> Last(Date d);

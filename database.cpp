@@ -7,7 +7,7 @@ ostream& operator<<(ostream& os, const pair<Date, string> p){
     return os;
 }
 
-void Database::Add(Date& date, string& event) {
+void Database::Add(const Date& date, const string& event) {
     auto it = database[date].set_data.find(event);
     if (it == database[date].set_data.end()) {
         database[date].vector_data.push_back(event);
