@@ -8,21 +8,33 @@ ostream& operator<<(ostream& os, const pair<Date, string> p){
 }
 
 void Database::Add(const Date& date, const string& event) {
-    auto it = database[date].set_data.find(event);
-    if (it == database[date].set_data.end()) {
-        database[date].vector_data.push_back(event);
-        database[date].set_data.insert(event);
+    auto it_map = database.find(date);
+    if (it_map == database.end()) {
+        set<string> ev_set;
+        vector<string> ev_vector;
+        ev_set.insert(event);
+        ev_vector.push_back(event);
+        Containers c;
+        c.set_data = ev_set;
+        c.vector_data = ev_vector;
+        database.insert({date, c});
+        return;
+    }
+
+    auto it_set = it_map->second.set_data.find(event);
+    if (it_set == it_map->second.set_data.end()) {
+        it_map->second.set_data.insert(event);
+        it_map->second.vector_data.push_back(event);
     }
 }
 
 int Database::RemoveIf(function<bool(const Date&, const string&)>p) {
     int deleted_data_num = 0;
-    bool erased = false;
 
     for (auto i = database.begin(); i != database.end();) {
-        auto it_vector = remove_if(i->second.vector_data.begin(), i->second.vector_data.end(),
+        auto it_vector = stable_partition(i->second.vector_data.begin(), i->second.vector_data.end(),
                                    [&](string e) {
-                                        return p(i->first, e);
+                                        return !p(i->first, e);
                                    });
         if (it_vector == i->second.vector_data.begin()) {
             deleted_data_num += i->second.vector_data.size();
@@ -30,14 +42,10 @@ int Database::RemoveIf(function<bool(const Date&, const string&)>p) {
         } else if (it_vector != i->second.vector_data.end()) {
             int erased_num = i->second.vector_data.end() - it_vector;
             deleted_data_num += erased_num;
-            i->second.vector_data.erase(it_vector, i->second.vector_data.end());
-            for (auto it_set = i->second.set_data.begin(); it_set != i->second.set_data.end();) {
-                if (p(i->first, *it_set)) {
-                    it_set = i->second.set_data.erase(it_set);
-                } else {
-                    it_set++;
-                }
+            for (auto it_erased = it_vector; it_erased != i->second.vector_data.end(); it_erased++) {
+                i->second.set_data.erase(*it_erased);
             }
+            i->second.vector_data.erase(it_vector, i->second.vector_data.end());
             i++;
         } else {
             i++;
@@ -51,16 +59,14 @@ VectorFindDatabse Database::FindIf(function<bool(const Date&, const string&)>p) 
     VectorFindDatabse find_database;
 
     for (auto i = database.begin(); i != database.end(); i++) {
-        /*auto it_vector = find_if(i->second.vector_data.begin(), i->second.vector_data.end(),
+        vector<string> tmp;
+        copy_if(i->second.vector_data.begin(), i->second.vector_data.end(), back_inserter(tmp),
                                    [&](string e) {
                                         return p(i->first, e);
                                    });
-        for (auto it = i->second.vector_data.begin(); it != it_vector; it++) {
-            find_database.push_back({i->first, *it});
-        }*/
-        for (auto j = i->second.vector_data.begin(); j != i->second.vector_data.end(); j++) {
-            if (p(i->first, *j)) {
-                find_database.push_back({i->first, *j});
+        if (tmp.size() != 0) {
+            for (auto it = tmp.begin(); it != tmp.end(); it++) {
+                find_database.push_back({i->first, *it});
             }
         }
     }
@@ -68,7 +74,7 @@ VectorFindDatabse Database::FindIf(function<bool(const Date&, const string&)>p) 
     return find_database;
 }
 
-pair<Date, string> Database::Last(Date d) {
+pair<Date, string> Database::Last(const Date& d) {
     auto last = upper_bound(database.begin(), database.end(), d,
                             [](Date dd, pair<Date, Containers> p) {
                                 return p.first > dd;

@@ -559,7 +559,7 @@ void TestAll() {
   TestRunner tr;
   tr.RunTest(TestParseEvent, "TestParseEvent");
   tr.RunTest(TestParseCondition, "TestParseCondition");
-  //tr.RunTest(TestDbSimple, "TestDbSimple");
-  //tr.RunTest(TestDbMedium, "TestDbMedium");
-  //tr.RunTest(TestDbRemove, "TestDbRemove");
+  tr.RunTest(TestDbSimple, "TestDbSimple");
+  tr.RunTest(TestDbMedium, "TestDbMedium");
+  tr.RunTest(TestDbRemove, "TestDbRemove");
 }

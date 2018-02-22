@@ -25,7 +25,7 @@ public:
     void Add(const Date& date, const string& event);
     int RemoveIf(function<bool(const Date&, const string&)>p);
     VectorFindDatabse FindIf(function<bool(const Date&, const string&)>p);
-    pair<Date, string> Last(Date d);
+    pair<Date, string> Last(const Date& d);
     ostream& Print(ostream& os);
 
     MapDatabase database;
