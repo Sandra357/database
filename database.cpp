@@ -75,10 +75,7 @@ VectorFindDatabse Database::FindIf(function<bool(const Date&, const string&)>p) 
 }
 
 pair<Date, string> Database::Last(const Date& d) {
-    auto last = upper_bound(database.begin(), database.end(), d,
-                            [](Date dd, pair<Date, Containers> p) {
-                                return p.first > dd;
-                            });
+    auto last = database.upper_bound(d);
 
     if (last == database.begin()) {
         throw invalid_argument("No entries");
